@@ -1,10 +1,37 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { ThrottlerModule } from '@nestjs/throttler';
+
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ThrottlerBehindProxyGuard } from './common/guards/throttler-behind-proxy.guard';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
+import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
 
 @Module({
-	imports: [],
+	imports: [
+		ConfigModule.forRoot({ isGlobal: true }),
+		ThrottlerModule.forRoot([
+			{
+				ttl: 60_000, // 1 minute
+				limit: 30, // 30 requests per minute
+			},
+		]),
+	],
 	controllers: [AppController],
-	providers: [AppService],
+	providers: [
+		{
+			provide: APP_INTERCEPTOR,
+			useClass: LoggingInterceptor,
+		},
+		{
+			provide: APP_INTERCEPTOR,
+			useClass: TimeoutInterceptor,
+		},
+		{
+			provide: APP_GUARD,
+			useClass: ThrottlerBehindProxyGuard,
+		},
+	],
 })
 export class AppModule {}
