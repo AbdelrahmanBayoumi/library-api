@@ -1,0 +1,111 @@
+// src/modules/books/books.controller.ts
+
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
+import {
+	ApiBadRequestResponse,
+	ApiBody,
+	ApiCreatedResponse,
+	ApiNoContentResponse,
+	ApiNotFoundResponse,
+	ApiOkResponse,
+	ApiOperation,
+	ApiParam,
+	ApiQuery,
+	ApiTags,
+} from '@nestjs/swagger';
+
+import { BooksService } from './books.service';
+import { CreateBookDto } from './dto/create-book.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
+import { Book } from './entities/book.entity';
+
+@ApiTags('Books')
+@Controller('books')
+export class BooksController {
+	constructor(private readonly booksService: BooksService) {}
+
+	@Post()
+	@ApiOperation({ summary: 'Create a new book' })
+	@ApiCreatedResponse({
+		description: 'The book has been successfully created.',
+		type: Book,
+	})
+	@ApiBadRequestResponse({ description: 'Invalid input data.' })
+	@ApiBody({ type: CreateBookDto })
+	create(@Body() dto: CreateBookDto): Promise<Book> {
+		return this.booksService.create(dto);
+	}
+
+	@Get()
+	@ApiOperation({ summary: 'Get all books (with optional filters)' })
+	@ApiOkResponse({
+		description: 'Array of books',
+		type: [Book],
+	})
+	@ApiQuery({
+		name: 'title',
+		required: false,
+		description: 'Partial match on title',
+		type: String,
+	})
+	@ApiQuery({
+		name: 'author',
+		required: false,
+		description: 'Partial match on author',
+		type: String,
+	})
+	@ApiQuery({
+		name: 'isbn',
+		required: false,
+		description: 'Exact match on ISBN',
+		type: String,
+	})
+	findAll(
+		@Query('title') title?: string,
+		@Query('author') author?: string,
+		@Query('isbn') isbn?: string
+	): Promise<Book[]> {
+		return this.booksService.findAll(title, author, isbn);
+	}
+
+	@Get(':id')
+	@ApiOperation({ summary: 'Get a book by its ID' })
+	@ApiOkResponse({ description: 'The found book', type: Book })
+	@ApiNotFoundResponse({ description: 'Book not found.' })
+	@ApiParam({
+		name: 'id',
+		description: 'Numeric ID of the book to retrieve',
+		type: Number,
+	})
+	findOne(@Param('id', ParseIntPipe) id: number): Promise<Book> {
+		return this.booksService.findOne(id);
+	}
+
+	@Put(':id')
+	@ApiOperation({ summary: 'Update an existing book' })
+	@ApiOkResponse({ description: 'The updated book', type: Book })
+	@ApiBadRequestResponse({ description: 'Invalid input data.' })
+	@ApiNotFoundResponse({ description: 'Book not found.' })
+	@ApiParam({
+		name: 'id',
+		description: 'ID of the book to update',
+		type: Number,
+	})
+	@ApiBody({ type: UpdateBookDto })
+	update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateBookDto): Promise<Book> {
+		return this.booksService.update(id, dto);
+	}
+
+	@Delete(':id')
+	@ApiOperation({ summary: 'Delete a book by its ID' })
+	@ApiNoContentResponse({ description: 'Book successfully deleted.' })
+	@ApiNotFoundResponse({ description: 'Book not found.' })
+	@ApiParam({
+		name: 'id',
+		description: 'ID of the book to delete',
+		type: Number,
+	})
+	remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+		return this.booksService.remove(id);
+	}
+}

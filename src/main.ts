@@ -1,5 +1,5 @@
-import { Logger, ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
@@ -32,6 +32,7 @@ async function bootstrap() {
 	// Initialize Error Handler
 	app.useGlobalFilters(new GlobalExceptionFilter());
 	app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+	app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 	app.enableShutdownHooks();
 
 	if (process.env.NODE_ENV === Env.development) setupSwagger(app);
