@@ -3,7 +3,13 @@
 import { BadRequestException, Controller, Get, HttpStatus, Query, Res } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { ReportsService } from './reports.service';
+import { ExportFormat, ReportsService } from './reports.service';
+
+interface ExportOptions {
+	format: ExportFormat;
+	filename: string;
+	contentType: string;
+}
 
 @ApiTags('Reports')
 @Controller('reports/borrowings')
@@ -46,9 +52,7 @@ export class ReportsController {
 	@ApiQuery({ name: 'startDate', description: 'YYYY-MM-DD', required: true })
 	@ApiQuery({ name: 'endDate', description: 'YYYY-MM-DD', required: true })
 	async getBorrowingsAnalytics(@Query('startDate') startDate: string, @Query('endDate') endDate: string) {
-		if (!startDate || !endDate) {
-			throw new BadRequestException('startDate and endDate required');
-		}
+		this.validateDateRange(startDate, endDate);
 		return this.reports.getBorrowingReport(startDate, endDate);
 	}
 
@@ -60,54 +64,55 @@ export class ReportsController {
 	async exportBorrowingsAnalytics(
 		@Query('startDate') startDate: string,
 		@Query('endDate') endDate: string,
-		@Query('format') format: 'csv' | 'xlsx' = 'csv',
+		@Query('format') format: ExportFormat = 'csv',
 		@Res() res: Response
 	) {
-		if (!startDate || !endDate) {
-			throw new BadRequestException('startDate and endDate required');
-		}
+		this.validateDateRange(startDate, endDate);
 		const buffer = await this.reports.exportBorrowingReport(startDate, endDate, format);
-		const ext = format === 'xlsx' ? 'xlsx' : 'csv';
-		res.status(HttpStatus.OK)
-			.header('Content-Disposition', `attachment; filename="borrowing-report-${startDate}-to-${endDate}.${ext}"`)
-			.header(
-				'Content-Type',
-				format === 'xlsx' ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'text/csv'
-			)
-			.send(buffer);
+		const options = this.getExportOptions(format, `borrowing-report-${startDate}-to-${endDate}`);
+		this.sendFileResponse(res, buffer, options);
 	}
 
 	@Get('overdue-last-month')
 	@ApiOperation({ summary: "Export last month's overdue borrowings" })
 	@ApiQuery({ name: 'format', enum: ['csv', 'xlsx'], required: false })
-	async exportOverdueLastMonth(@Query('format') format: 'csv' | 'xlsx' = 'csv', @Res() res: Response) {
+	async exportOverdueLastMonth(@Query('format') format: ExportFormat = 'csv', @Res() res: Response) {
 		const buffer = await this.reports.exportLastMonthOverdue(format);
-		const ext = format === 'xlsx' ? 'xlsx' : 'csv';
-		const filename = `overdue-last-month.${ext}`;
-
-		res.status(HttpStatus.OK)
-			.header('Content-Disposition', `attachment; filename="${filename}"`)
-			.header(
-				'Content-Type',
-				format === 'xlsx' ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'text/csv'
-			)
-			.send(buffer);
+		const options = this.getExportOptions(format, 'overdue-last-month');
+		this.sendFileResponse(res, buffer, options);
 	}
 
 	@Get('last-month')
 	@ApiOperation({ summary: 'Export all borrowings of the last month' })
 	@ApiQuery({ name: 'format', enum: ['csv', 'xlsx'], required: false })
-	async exportLastMonthBorrowings(@Query('format') format: 'csv' | 'xlsx' = 'csv', @Res() res: Response) {
+	async exportLastMonthBorrowings(@Query('format') format: ExportFormat = 'csv', @Res() res: Response) {
 		const buffer = await this.reports.exportLastMonthBorrowings(format);
-		const ext = format === 'xlsx' ? 'xlsx' : 'csv';
-		const filename = `last-month-borrowings.${ext}`;
+		const options = this.getExportOptions(format, 'last-month-borrowings');
+		this.sendFileResponse(res, buffer, options);
+	}
 
+	private validateDateRange(startDate: string, endDate: string): void {
+		if (!startDate || !endDate) {
+			throw new BadRequestException('startDate and endDate required');
+		}
+	}
+
+	private getExportOptions(format: ExportFormat, baseFilename: string): ExportOptions {
+		const ext = format === 'xlsx' ? 'xlsx' : 'csv';
+		const contentType =
+			format === 'xlsx' ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'text/csv';
+
+		return {
+			format,
+			filename: `${baseFilename}.${ext}`,
+			contentType,
+		};
+	}
+
+	private sendFileResponse(res: Response, buffer: Buffer, options: ExportOptions): void {
 		res.status(HttpStatus.OK)
-			.header('Content-Disposition', `attachment; filename="${filename}"`)
-			.header(
-				'Content-Type',
-				format === 'xlsx' ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'text/csv'
-			)
+			.header('Content-Disposition', `attachment; filename="${options.filename}"`)
+			.header('Content-Type', options.contentType)
 			.send(buffer);
 	}
 }

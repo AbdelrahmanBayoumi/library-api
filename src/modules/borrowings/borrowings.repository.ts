@@ -20,14 +20,9 @@ export class BorrowingsRepository {
 			book: { id: dto.bookId },
 			borrower: { id: dto.borrowerId },
 		});
-		// First save the borrowing
-		const saved = await this.repo.save(borrowing);
 
-		// Then fetch it with relations
-		return this.repo.findOne({
-			where: { id: saved.id },
-			relations: ['book', 'borrower'],
-		});
+		const saved = await this.repo.save(borrowing);
+		return this.findOneWithRelations(saved.id);
 	}
 
 	/** Find all active (not returned) loans for a given borrower */
@@ -40,21 +35,12 @@ export class BorrowingsRepository {
 
 	/** Find all overdue loans */
 	async findOverdue(): Promise<Borrowing[]> {
-		return this.repo
-			.createQueryBuilder('b')
-			.leftJoinAndSelect('b.book', 'book')
-			.leftJoinAndSelect('b.borrower', 'borrower')
-			.where('b.returnDate IS NULL')
-			.andWhere('b.dueDate < CURRENT_DATE')
-			.getMany();
+		return this.createBaseQuery().where('b.returnDate IS NULL').andWhere('b.dueDate < CURRENT_DATE').getMany();
 	}
 
 	/** Lookup one borrowing record by ID */
 	async findOne(id: number): Promise<Borrowing> {
-		const borrowing = await this.repo.findOne({
-			where: { id },
-			relations: ['book', 'borrower'],
-		});
+		const borrowing = await this.findOneWithRelations(id);
 		if (!borrowing) {
 			throw new NotFoundException(`Borrowing with id ${id} not found`);
 		}
@@ -68,11 +54,9 @@ export class BorrowingsRepository {
 		return this.repo.save(borrowing);
 	}
 
+	/** Find overdue borrowings within date range */
 	async findOverdueInPeriod(startDate: string, endDate: string): Promise<Borrowing[]> {
-		return this.repo
-			.createQueryBuilder('b')
-			.leftJoinAndSelect('b.book', 'book')
-			.leftJoinAndSelect('b.borrower', 'borrower')
+		return this.createBaseQuery()
 			.where('b.returnDate IS NULL')
 			.andWhere('b.dueDate BETWEEN :start AND :end', {
 				start: startDate,
@@ -88,6 +72,22 @@ export class BorrowingsRepository {
 			where: {
 				borrowDate: Between(start, end),
 			},
+		});
+	}
+
+	/** Create base query with common joins */
+	private createBaseQuery() {
+		return this.repo
+			.createQueryBuilder('b')
+			.leftJoinAndSelect('b.book', 'book')
+			.leftJoinAndSelect('b.borrower', 'borrower');
+	}
+
+	/** Find one borrowing with relations */
+	private async findOneWithRelations(id: number): Promise<Borrowing | null> {
+		return this.repo.findOne({
+			where: { id },
+			relations: ['book', 'borrower'],
 		});
 	}
 }
