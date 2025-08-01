@@ -147,7 +147,7 @@ npm run migration:show
 
 ## 📖 API Documentation
 
-Refer to the API documentation for detailed information on request/response structures. ⇒ [API Documentation](./docs/API.md)
+Refer to the API documentation for detailed information on request/response structures. ⇒ [API Documentation](./docs/API.md) or Live Swagger docs [HERE](https://library-api-production-206d.up.railway.app/docs)
 
 ### Core Endpoints
 
