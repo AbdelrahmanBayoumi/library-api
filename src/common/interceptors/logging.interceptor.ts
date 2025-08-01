@@ -8,7 +8,7 @@ import { extractIP } from '../utils/ip.util';
 export class LoggingInterceptor implements NestInterceptor {
 	private readonly logger = new Logger('RequestLogger');
 
-	intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+	intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
 		const req = context.switchToHttp().getRequest() as Request;
 		const res = context.switchToHttp().getResponse<Response>();
 		const { method, originalUrl } = req;
