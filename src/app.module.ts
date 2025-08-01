@@ -2,13 +2,14 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ThrottlerModule } from '@nestjs/throttler';
-
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { AppController } from './app.controller';
 import { ThrottlerBehindProxyGuard } from './common/guards/throttler-behind-proxy.guard';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
 import { TypeOrmConfigService } from './database/typeorm-config.service';
+import { HealthModule } from './health/health.module';
 import { BooksModule } from './modules/books/books.module';
 import { BorrowersModule } from './modules/borrowers/borrowers.module';
 import { BorrowingsModule } from './modules/borrowings/borrowings.module';
@@ -26,6 +27,7 @@ import { BorrowingsModule } from './modules/borrowings/borrowings.module';
 		BooksModule,
 		BorrowersModule,
 		BorrowingsModule,
+		HealthModule,
 	],
 	controllers: [AppController],
 	providers: [
