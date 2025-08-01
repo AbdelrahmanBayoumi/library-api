@@ -1,42 +1,52 @@
-# Build stage
-FROM node:18-alpine AS builder
+# syntax=docker/dockerfile:1
+
+########################################
+# Builder stage: install dependencies, build app
+########################################
+FROM node:22-alpine AS builder
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files first to leverage Docker cache
+# Copy package manifests and install all dependencies (development + production)
 COPY package*.json ./
-
-# Install dependencies
 RUN npm ci
 
-# Copy the rest of the application code
+# Copy source files into container
 COPY . .
 
-# Build the application
+# Compile TypeScript to JavaScript
 RUN npm run build
 
-# Production stage
-FROM node:18-alpine AS runner
+# Set production environment for pruning
+ENV NODE_ENV=production
+
+# Remove development dependencies, keeping only production dependencies
+RUN npm prune --production
+
+########################################
+# Production stage: minimal runtime image
+########################################
+FROM node:22-alpine AS production
 
 # Set working directory
 WORKDIR /app
 
-# Copy only necessary files from the builder stage
-COPY package*.json ./
-COPY --from=builder /app/dist ./dist
+# Create non-root 'appuser' user and group for better security
+RUN addgroup -S appgroup \
+ && adduser  -S appuser -G appgroup
 
-# Set environment variables
-ENV NODE_ENV=production
+# Copy compiled app, production dependencies, package information, and static assets
+COPY --from=builder --chown=appuser:appgroup /app/dist      ./dist
+COPY --from=builder --chown=appuser:appgroup /app/node_modules ./node_modules
+COPY --from=builder --chown=appuser:appgroup /app/package*.json ./
+COPY --from=builder --chown=appuser:appgroup /app/public      ./public
 
-# Create non-root user
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+# Switch to the non-root user
 USER appuser
 
-# Install only production dependencies
-# This ensures that devDependencies are not included in the final image
-RUN npm ci --only=production
-
-# Expose the application port
+# Expose application port
 EXPOSE 3000
-CMD ["node", "dist/main.js"]
+
+# Launch the application
+CMD ["npm","run","start:prod"]
