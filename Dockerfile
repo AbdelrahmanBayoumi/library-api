@@ -21,9 +21,6 @@ RUN npm run build
 # Set production environment for pruning
 ENV NODE_ENV=production
 
-# Remove development dependencies, keeping only production dependencies
-RUN npm prune --production
-
 ########################################
 # Production stage: minimal runtime image
 ########################################

@@ -1,85 +1,236 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 📚 Library Management API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+[![NestJS](https://img.shields.io/badge/NestJS-11.1.5-red.svg)](https://nestjs.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-8.16.3-blue.svg)](https://www.postgresql.org/)
+[![TypeORM](https://img.shields.io/badge/TypeORM-0.3.25-orange.svg)](https://typeorm.io/)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+A comprehensive library management API built with NestJS, featuring book borrowing, borrower management, and detailed reporting with CSV/Excel export capabilities.
 
-## Description
+## 🚀 Features
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **📖 Book Management**: CRUD operations for books with search functionality
+- **👥 Borrower Management**: Complete borrower lifecycle management
+- **📋 Borrowing System**: Track book loans, returns, and overdue items
+- **📊 Advanced Reporting**: Analytics and export capabilities (CSV/Excel)
+- **🔒 Security**: Rate limiting, input validation, and security headers
+- **📚 API Documentation**: Auto-generated Swagger documentation
+- **🏥 Health Checks**: System monitoring and health endpoints
+- **⚡ Performance**: Optimized database queries and caching
 
-## Project setup
+## 🛠️ Tech Stack
 
-```bash
-$ npm install
-```
+- **Framework**: [NestJS](https://nestjs.com/) - Progressive Node.js framework
+- **Language**: [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
+- **Database**: [PostgreSQL](https://www.postgresql.org/) - Reliable relational database
+- **ORM**: [TypeORM](https://typeorm.io/) - Database ORM with migrations
+- **Documentation**: [Swagger/OpenAPI](https://swagger.io/) - API documentation
+- **Export**: [ExcelJS](https://github.com/exceljs/exceljs) & [csv-writer](https://github.com/ryu1kn/csv-writer) - Data export
 
-## Compile and run the project
+## 📋 Prerequisites
 
-```bash
-# development
-$ npm run start
+- Node.js 18+
+- PostgreSQL 12+
+- npm or yarn
 
-# watch mode
-$ npm run start:dev
+## 🚀 Quick Start
 
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
+### 1. Clone the repository
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+git clone https://github.com/AbdelrahmanBayoumi/library-api.git
+cd library-api
 ```
 
-## Resources
+### 2. Install dependencies
 
-Check out a few resources that may come in handy when working with NestJS:
+```bash
+npm install
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### 3. Environment Setup
 
-## Support
+Create a .env file in the root directory like [`.env.example`](.env.example) and fill in the required environment variables
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 4. Database Setup
 
-## Stay in touch
+```bash
+# Run database migrations
+npm run migration:run
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 5. Start the application
 
-## License
+```bash
+# Development mode
+npm run start:dev
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+# Production mode
+npm run build
+npm run start:prod
+```
+
+The API will be available at `http://localhost:3000`, API Documentation (Swagger): `http://localhost:3000/docs`
+
+## 🐳 Docker
+
+If you’d rather run the API in Docker instead of installing Node & Postgres locally, you can:
+
+1. **Build the image**
+
+    ```bash
+    docker build -t library-api .
+    ```
+
+2. **Run the container**
+
+    ```bash
+    docker run -d \
+      --name library-api \
+      --env-file .env \
+      -p 3000:3000 \
+      library-api
+    ```
+
+3. **Run migrations**
+
+    ```bash
+    docker exec library-api npm run typeorm -- --dataSource=dist/database/data-source.js migration:run
+    ```
+
+Your API will now be live at `http://localhost:3000`.
+(The `--env-file .env` flag ensures your database credentials from `.env` are passed into the container.)
+
+## 🐳 Docker Compose
+
+If you’d like to run both PostgreSQL and the API together:
+
+1. prepare a `.env` file with your database credentials.
+2. builds the images, starts the containers in the background, and recreates them if needed
+    ```bash
+    docker-compose up --build -d
+    ```
+3. run migrations:
+    ```bash
+    docker-compose exec app npm run typeorm -- --dataSource=dist/database/data-source.js migration:run
+    ```
+4. The API is available at `http://localhost:3000`.
+
+Manage the stack with:
+
+```bash
+docker-compose logs -f    # tail logs
+docker-compose down       # stop & remove containers
+docker-compose ps         # list containers
+```
+
+## 🧪 Testing
+
+```bash
+# Unit tests
+npm run test
+
+# E2E tests
+npm run test:e2e
+
+# Test coverage
+npm run test:cov
+```
+
+## 🔧 Database Migrations
+
+```bash
+# Generate a new migration
+npm run migration:generate -- src/database/migrations/MigrationName
+
+# Run migrations
+npm run migration:run
+
+# Revert last migration
+npm run migration:revert
+
+# Show migration status
+npm run migration:show
+```
+
+## 📖 API Documentation
+
+Refer to the API documentation for detailed information on request/response structures. ⇒ [API Documentation](./docs/API.md)
+
+### Core Endpoints
+
+#### Books 📚
+
+- `GET /books` - List all books with pagination and search
+- `POST /books` - Create a new book
+- `GET /books/:id` - Get book details
+- `PUT /books/:id` - Update book information
+- `DELETE /books/:id` - Delete a book
+
+#### Borrowers 👥
+
+- `GET /borrowers` - List all borrowers
+- `POST /borrowers` - Register a new borrower
+- `GET /borrowers/:id` - Get borrower details
+- `PUT /borrowers/:id` - Update borrower information
+- `DELETE /borrowers/:id` - Delete a borrower
+
+#### Borrowings 📋
+
+- `GET /borrowings` - List all borrowings
+- `POST /borrowings` - Create a new borrowing
+- `GET /borrowings/:id` - Get borrowing details
+- `PUT /borrowings/:id/return` - Return a borrowed book
+- `PUT /borrowings/:id` - Update borrowing information
+
+#### Reports 📊
+
+- `GET /reports/borrowings/analytics` - Get borrowing analytics
+- `GET /reports/borrowings/analytics/export` - Export analytics (CSV/XLSX)
+- `GET /reports/borrowings/overdue-last-month` - Export overdue report
+- `GET /reports/borrowings/last-month` - Export last month's borrowings
+
+### Health Check 🏥
+
+- `GET /health` - System health status
+
+## 📈 Performance & Security
+
+- **Rate Limiting**: 30 requests per minute per IP
+- **Input Validation**: Comprehensive request validation
+- **Security Headers**: Helmet.js for security headers
+- **CORS**: Configurable Cross-Origin Resource Sharing
+- **Error Handling**: Global exception filter
+- **Logging**: Request/response logging with correlation IDs
+- **Timeout Protection**: Request timeout handling
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📚 Additional Documentation
+
+- [API Documentation](./docs/API.md) - Detailed API reference
+- [Database Schema](./docs/DATABASE.md) - Database design and relationships
+
+<h5 align="center">
+
+⭐ **Star this repository if you find it helpful!**
+
+</h5>
+
+---
+
+<h5 align="center">
+ سبحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَشْهَدُ أَنْ لا إِلهَ إِلأَ انْتَ أَسْتَغْفِرُكَ وَأَتْوبُ إِلَيْكَ
+</h5>
