@@ -54,7 +54,7 @@ npm install
 
 ### 3. Environment Setup
 
-Create a .env file in the root directory like [`.env.sample`](./.env.example) and fill in the required environment variables
+Create a .env file in the root directory like [`.env.sample`](./.env.sample) and fill in the required environment variables
 
 ### 4. Database Setup
 
