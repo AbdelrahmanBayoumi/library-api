@@ -13,6 +13,7 @@ import { HealthModule } from './health/health.module';
 import { BooksModule } from './modules/books/books.module';
 import { BorrowersModule } from './modules/borrowers/borrowers.module';
 import { BorrowingsModule } from './modules/borrowings/borrowings.module';
+import { ReportsModule } from './modules/reports/reports.module';
 
 @Module({
 	imports: [
@@ -28,6 +29,7 @@ import { BorrowingsModule } from './modules/borrowings/borrowings.module';
 		BorrowersModule,
 		BorrowingsModule,
 		HealthModule,
+		ReportsModule,
 	],
 	controllers: [AppController],
 	providers: [

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { CreateBorrowingDto } from './dto/create-borrowing.dto';
 import { Borrowing } from './entities/borrowing.entity';
 
@@ -66,5 +66,28 @@ export class BorrowingsRepository {
 		const borrowing = await this.findOne(id);
 		borrowing.returnDate = returnDate;
 		return this.repo.save(borrowing);
+	}
+
+	async findOverdueInPeriod(startDate: string, endDate: string): Promise<Borrowing[]> {
+		return this.repo
+			.createQueryBuilder('b')
+			.leftJoinAndSelect('b.book', 'book')
+			.leftJoinAndSelect('b.borrower', 'borrower')
+			.where('b.returnDate IS NULL')
+			.andWhere('b.dueDate BETWEEN :start AND :end', {
+				start: startDate,
+				end: endDate,
+			})
+			.getMany();
+	}
+
+	/** Find borrowings within date range */
+	async findInPeriod(start: string, end: string): Promise<Borrowing[]> {
+		return this.repo.find({
+			relations: ['book', 'borrower'],
+			where: {
+				borrowDate: Between(start, end),
+			},
+		});
 	}
 }

@@ -45,4 +45,8 @@ export class BorrowingsService {
 	findOverdue(): Promise<Borrowing[]> {
 		return this.borrowingsRepo.findOverdue();
 	}
+
+	async findOverdueInPeriod(startDate: string, endDate: string): Promise<Borrowing[]> {
+		return this.borrowingsRepo.findOverdueInPeriod(startDate, endDate);
+	}
 }

@@ -10,6 +10,6 @@ import { Borrowing } from './entities/borrowing.entity';
 	imports: [TypeOrmModule.forFeature([Borrowing]), BooksModule],
 	controllers: [BorrowingsController],
 	providers: [BorrowingsService, BorrowingsRepository],
-	exports: [BorrowingsService],
+	exports: [BorrowingsService, BorrowingsRepository],
 })
 export class BorrowingsModule {}
