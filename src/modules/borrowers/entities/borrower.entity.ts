@@ -1,6 +1,6 @@
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
-import { Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, DeleteDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Borrowing } from '../../borrowings/entities/borrowing.entity';
 
 @Entity()
@@ -10,6 +10,7 @@ export class Borrower {
 	id: number;
 
 	@ApiProperty({ example: 'John Doe', description: 'Borrower’s full name' })
+	@Index()
 	@Column()
 	name: string;
 

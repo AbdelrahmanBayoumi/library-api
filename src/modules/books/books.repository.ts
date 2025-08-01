@@ -23,22 +23,44 @@ export class BooksRepository {
 		}
 	}
 
-	async findAll(filters?: { title?: string; author?: string; isbn?: string }): Promise<Book[]> {
+	async findAll(filters?: {
+		title?: string;
+		author?: string;
+		isbn?: string;
+		page?: number;
+		limit?: number;
+		sortBy?: 'title' | 'author' | 'isbn';
+		sortOrder?: 'ASC' | 'DESC';
+	}): Promise<[Book[], number]> {
 		const qb = this.repo.createQueryBuilder('book');
+
+		// Apply filters
 		if (filters?.title) {
-			qb.andWhere('book.title LIKE :title', {
+			qb.andWhere('LOWER(book.title) LIKE LOWER(:title)', {
 				title: `%${filters.title}%`,
 			});
 		}
 		if (filters?.author) {
-			qb.andWhere('book.author LIKE :author', {
+			qb.andWhere('LOWER(book.author) LIKE LOWER(:author)', {
 				author: `%${filters.author}%`,
 			});
 		}
 		if (filters?.isbn) {
 			qb.andWhere('book.isbn = :isbn', { isbn: filters.isbn });
 		}
-		return qb.getMany();
+
+		// Apply sorting
+		if (filters?.sortBy) {
+			qb.orderBy(`book.${filters.sortBy}`, filters.sortOrder || 'ASC');
+		}
+
+		// Apply pagination
+		const page = filters?.page || 1;
+		const limit = filters?.limit || 10;
+		qb.skip((page - 1) * limit).take(limit);
+
+		// Return both data and total count
+		return qb.getManyAndCount();
 	}
 
 	async findOne(id: number): Promise<Book> {

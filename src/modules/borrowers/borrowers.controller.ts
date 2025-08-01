@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import {
 	ApiBadRequestResponse,
 	ApiBody,
@@ -8,6 +8,7 @@ import {
 	ApiOkResponse,
 	ApiOperation,
 	ApiParam,
+	ApiQuery,
 	ApiTags,
 } from '@nestjs/swagger';
 
@@ -32,9 +33,46 @@ export class BorrowersController {
 
 	@Get()
 	@ApiOperation({ summary: 'List all borrowers' })
-	@ApiOkResponse({ description: 'Array of borrowers', type: [Borrower] })
-	findAll(): Promise<Borrower[]> {
-		return this.borrowersService.findAll();
+	@ApiOkResponse({
+		description: 'Paginated list of borrowers',
+		schema: {
+			properties: {
+				data: {
+					type: 'array',
+					items: { $ref: '#/components/schemas/Borrower' },
+				},
+				total: {
+					type: 'number',
+					description: 'Total number of records',
+				},
+			},
+		},
+	})
+	@ApiQuery({ name: 'name', required: false, type: String })
+	@ApiQuery({ name: 'email', required: false, type: String })
+	@ApiQuery({ name: 'page', required: false, type: Number })
+	@ApiQuery({ name: 'limit', required: false, type: Number })
+	@ApiQuery({
+		name: 'sortBy',
+		required: false,
+		enum: ['name', 'email', 'registeredDate'],
+	})
+	@ApiQuery({
+		name: 'sortOrder',
+		required: false,
+		enum: ['ASC', 'DESC'],
+	})
+	findAll(
+		@Query('name') name?: string,
+		@Query('email') email?: string,
+		@Query('page') page?: number,
+		@Query('limit') limit?: number,
+		@Query('sortBy') sortBy?: 'name' | 'email' | 'registeredDate',
+		@Query('sortOrder') sortOrder?: 'ASC' | 'DESC'
+	): Promise<{ data: Borrower[]; total: number }> {
+		return this.borrowersService
+			.findAll({ name, email, page, limit, sortBy, sortOrder })
+			.then(([data, total]) => ({ data, total }));
 	}
 
 	@Get(':id')

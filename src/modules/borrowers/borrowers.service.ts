@@ -22,8 +22,15 @@ export class BorrowersService {
 		}
 	}
 
-	findAll(): Promise<Borrower[]> {
-		return this.borrowersRepo.findAll();
+	findAll(filters?: {
+		name?: string;
+		email?: string;
+		page?: number;
+		limit?: number;
+		sortBy?: 'name' | 'email' | 'registeredDate';
+		sortOrder?: 'ASC' | 'DESC';
+	}): Promise<[Borrower[], number]> {
+		return this.borrowersRepo.findAll(filters);
 	}
 
 	findOne(id: number): Promise<Borrower> {

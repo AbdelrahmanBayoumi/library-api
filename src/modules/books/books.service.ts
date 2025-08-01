@@ -12,8 +12,16 @@ export class BooksService {
 		return this.booksRepo.create(dto);
 	}
 
-	findAll(title?: string, author?: string, isbn?: string): Promise<Book[]> {
-		return this.booksRepo.findAll({ title, author, isbn });
+	findAll(filters?: {
+		title?: string;
+		author?: string;
+		isbn?: string;
+		page?: number;
+		limit?: number;
+		sortBy?: 'title' | 'author' | 'isbn';
+		sortOrder?: 'ASC' | 'DESC';
+	}): Promise<[Book[], number]> {
+		return this.booksRepo.findAll(filters);
 	}
 
 	findOne(id: number): Promise<Book> {

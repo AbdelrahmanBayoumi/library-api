@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Borrowing } from '../../borrowings/entities/borrowing.entity';
 
 @Entity()
@@ -9,10 +9,12 @@ export class Book {
 	id: number;
 
 	@ApiProperty({ example: 'Clean Code' })
+	@Index()
 	@Column()
 	title: string;
 
 	@ApiProperty({ example: 'Robert C. Martin' })
+	@Index()
 	@Column()
 	author: string;
 

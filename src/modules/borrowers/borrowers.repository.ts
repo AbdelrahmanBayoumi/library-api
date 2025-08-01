@@ -17,8 +17,40 @@ export class BorrowersRepository {
 		return this.repo.save(borrower);
 	}
 
-	async findAll(): Promise<Borrower[]> {
-		return this.repo.find();
+	async findAll(filters?: {
+		name?: string;
+		email?: string;
+		page?: number;
+		limit?: number;
+		sortBy?: 'name' | 'email' | 'registeredDate';
+		sortOrder?: 'ASC' | 'DESC';
+	}): Promise<[Borrower[], number]> {
+		const qb = this.repo.createQueryBuilder('borrower');
+
+		// Apply filters
+		if (filters?.name) {
+			qb.andWhere('LOWER(borrower.name) LIKE LOWER(:name)', {
+				name: `%${filters.name}%`,
+			});
+		}
+		if (filters?.email) {
+			qb.andWhere('LOWER(borrower.email) LIKE LOWER(:email)', {
+				email: `%${filters.email}%`,
+			});
+		}
+
+		// Apply sorting
+		if (filters?.sortBy) {
+			qb.orderBy(`borrower.${filters.sortBy}`, filters.sortOrder || 'ASC');
+		}
+
+		// Apply pagination
+		const page = filters?.page || 1;
+		const limit = filters?.limit || 10;
+		qb.skip((page - 1) * limit).take(limit);
+
+		// Return both data and total count
+		return qb.getManyAndCount();
 	}
 
 	async findOne(id: number): Promise<Borrower> {

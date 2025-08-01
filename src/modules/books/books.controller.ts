@@ -39,8 +39,31 @@ export class BooksController {
 	@Get()
 	@ApiOperation({ summary: 'Get all books (with optional filters)' })
 	@ApiOkResponse({
-		description: 'Array of books',
-		type: [Book],
+		description: 'Paginated list of books',
+		schema: {
+			properties: {
+				data: {
+					type: 'array',
+					items: { $ref: '#/components/schemas/Book' },
+				},
+				total: {
+					type: 'number',
+					description: 'Total number of records',
+				},
+			},
+		},
+	})
+	@ApiQuery({ name: 'page', required: false, type: Number })
+	@ApiQuery({ name: 'limit', required: false, type: Number })
+	@ApiQuery({
+		name: 'sortBy',
+		required: false,
+		enum: ['title', 'author', 'isbn'],
+	})
+	@ApiQuery({
+		name: 'sortOrder',
+		required: false,
+		enum: ['ASC', 'DESC'],
 	})
 	@ApiQuery({
 		name: 'title',
@@ -63,9 +86,15 @@ export class BooksController {
 	findAll(
 		@Query('title') title?: string,
 		@Query('author') author?: string,
-		@Query('isbn') isbn?: string
-	): Promise<Book[]> {
-		return this.booksService.findAll(title, author, isbn);
+		@Query('isbn') isbn?: string,
+		@Query('page') page?: number,
+		@Query('limit') limit?: number,
+		@Query('sortBy') sortBy?: 'title' | 'author' | 'isbn',
+		@Query('sortOrder') sortOrder?: 'ASC' | 'DESC'
+	): Promise<{ data: Book[]; total: number }> {
+		return this.booksService
+			.findAll({ title, author, isbn, page, limit, sortBy, sortOrder })
+			.then(([data, total]) => ({ data, total }));
 	}
 
 	@Get(':id')
