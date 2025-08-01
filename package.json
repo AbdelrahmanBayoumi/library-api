@@ -1,7 +1,7 @@
 {
 	"name": "library-api",
 	"version": "0.0.1",
-	"description": "A library API built with NestJS",
+	"description": "A comprehensive library management API built with NestJS, featuring book borrowing, borrower management, and detailed reporting with CSV/Excel export capabilities",
 	"author": "Abdelrahman Bayoumi",
 	"private": true,
 	"license": "MIT",
@@ -12,7 +12,7 @@
 		"start": "cross-env NODE_ENV=production nest start",
 		"start:dev": "cross-env NODE_ENV=development nest start --watch",
 		"start:debug": "cross-env NODE_ENV=development nest start --debug --watch",
-		"start:prod": "cross-env NODE_ENV=production node dist/src/main",
+		"start:prod": "node dist/main",
 		"lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
 		"test": "cross-env NODE_ENV=test jest",
 		"test:watch": "cross-env NODE_ENV=test jest --watch",

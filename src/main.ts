@@ -6,7 +6,6 @@ import helmet from 'helmet';
 import { join } from 'path';
 
 import { AppModule } from './app.module';
-import { Env } from './common/enums';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 
 function setupSwagger(app: NestExpressApplication) {
@@ -35,7 +34,7 @@ async function bootstrap() {
 	app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 	app.enableShutdownHooks();
 
-	if (process.env.NODE_ENV === Env.development) setupSwagger(app);
+	setupSwagger(app);
 
 	const PORT = process.env.PORT || 3000;
 	await app.listen(PORT);
@@ -43,7 +42,7 @@ async function bootstrap() {
 	// Log current url of app
 	const logger = new Logger('Main');
 	logger.log(`Listening to http://localhost:${PORT}`);
-	if (process.env.NODE_ENV === Env.development) logger.log(`Swagger UI: http://localhost:${PORT}/docs`);
+	logger.log(`Swagger UI: http://localhost:${PORT}/docs`);
 }
 
 bootstrap();

@@ -5,9 +5,12 @@ config();
 
 export default new DataSource({
 	type: 'postgres',
-	host: process.env.DB_HOST || 'localhost',
-	port: 5432,
-	url: process.env.DATABASE_URL,
+	host: process.env.DATABASE_HOST,
+	port: parseInt(process.env.DATABASE_PORT, 10),
+	username: process.env.DATABASE_USERNAME,
+	password: process.env.DATABASE_PASSWORD,
+	database: process.env.DATABASE_NAME,
+	ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: true } : false,
 	entities: [__dirname + '/../**/*.entity{.ts,.js}'],
 	migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
 });

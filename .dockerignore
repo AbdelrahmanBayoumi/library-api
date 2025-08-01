@@ -1,0 +1,41 @@
+# Node.js dependencies (we install inside the container)
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local environment files
+.env
+.env.*.local
+
+# Build output (re-built inside container)
+dist
+coverage
+
+# Git metadata
+.git
+.gitignore
+
+# Docker configs & ignore file itself
+docker-compose*.yml
+docker-compose*.yaml
+Dockerfile*
+.dockerignore
+
+# Logs
+*.log
+logs/
+pids/
+*.pid
+
+# IDE / editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# macOS / Windows system files
+.DS_Store
+Thumbs.db
