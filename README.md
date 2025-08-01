@@ -54,7 +54,7 @@ npm install
 
 ### 3. Environment Setup
 
-Create a .env file in the root directory like [`.env.example`](./.env.example) and fill in the required environment variables
+Create a .env file in the root directory like [`.env.sample`](./.env.example) and fill in the required environment variables
 
 ### 4. Database Setup
 
@@ -197,14 +197,6 @@ Refer to the API documentation for detailed information on request/response stru
 - **Error Handling**: Global exception filter
 - **Logging**: Request/response logging with correlation IDs
 - **Timeout Protection**: Request timeout handling
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## 📄 License
 
