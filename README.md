@@ -52,7 +52,7 @@ npm install
 
 ### 3. Environment Setup
 
-Create a .env file in the root directory like [`.env.example`](.env.example) and fill in the required environment variables
+Create a .env file in the root directory like [`.env.example`](./.env.example) and fill in the required environment variables
 
 ### 4. Database Setup
 
@@ -87,11 +87,7 @@ If you’d rather run the API in Docker instead of installing Node & Postgres lo
 2. **Run the container**
 
     ```bash
-    docker run -d \
-      --name library-api \
-      --env-file .env \
-      -p 3000:3000 \
-      library-api
+    docker run -d --name library-api --env-file .env -p 3000:3000 library-api
     ```
 
 3. **Run migrations**
