@@ -2,7 +2,7 @@
 
 [![NestJS](https://img.shields.io/badge/NestJS-11.1.5-red.svg)](https://nestjs.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-blue.svg)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-22+-green.svg)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-8.16.3-blue.svg)](https://www.postgresql.org/)
 [![TypeORM](https://img.shields.io/badge/TypeORM-0.3.25-orange.svg)](https://typeorm.io/)
@@ -115,12 +115,6 @@ If you’d like to run both PostgreSQL and the API together:
 4. The API is available at `http://localhost:3000`.
 
 Manage the stack with:
-
-```bash
-docker-compose logs -f    # tail logs
-docker-compose down       # stop & remove containers
-docker-compose ps         # list containers
-```
 
 ## 🧪 Testing
 

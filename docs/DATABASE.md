@@ -65,4 +65,4 @@ Keep your schema in sync with your entities by using TypeORM migrations:
 
 ## 📚 Additional Documentation
 
-- [API Documentation](./docs/API.md) - Detailed API reference
+- [API Documentation](./API.md) - Detailed API reference

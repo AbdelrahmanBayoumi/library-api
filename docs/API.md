@@ -2,38 +2,38 @@
 
 ## Table of Contents
 
-- [Books](#📚-books)
+- [Books](#books)
     - [Create Book](#create-book)
     - [List & Search Books](#list--search-books)
     - [Get Book by ID](#get-book-by-id)
     - [Update Book](#update-book)
     - [Delete Book](#delete-book)
 
-- [Borrowers](#👥-borrowers)
+- [Borrowers](#borrowers)
     - [Register Borrower](#register-borrower)
     - [List Borrowers](#list-borrowers)
     - [Get Borrower by ID](#get-borrower-by-id)
     - [Update Borrower](#update-borrower)
     - [Delete Borrower](#delete-borrower)
 
-- [Borrowings](#📋-borrowings)
+- [Borrowings](#borrowings)
     - [Checkout Book](#checkout-book)
     - [Return Book](#return-book)
     - [Get Loans for Borrower](#get-loans-for-borrower)
     - [List Overdue Borrowings](#list-overdue-borrowings)
 
-- [Reports](#📊-reports)
+- [Reports](#reports)
     - [Get Analytics](#get-analytics)
     - [Export Analytics (CSV/XLSX)](#export-analytics-csvxlsx)
     - [Export Last Month’s Overdue Borrowings](#export-last-months-overdue-borrowings)
     - [Export All Borrowings of Last Month](#export-all-borrowings-of-last-month)
 
-- [Health Check API](#🏥-health-check-api)
-- [Error Responses](#⚠️-error-responses)
+- [Health Check API](#health-check-api)
+- [Error Responses](#error-responses)
 
 ---
 
-## 📚 Books
+## Books
 
 #### [Back to top 🔝](#library-management-api)
 
@@ -175,7 +175,7 @@ DELETE /books/:id
 
 ---
 
-## 👥 Borrowers
+## Borrowers
 
 #### [Back to top 🔝](#library-management-api)
 
@@ -287,7 +287,7 @@ DELETE /borrowers/:id
 
 ---
 
-## 📋 Borrowings
+## Borrowings
 
 #### [Back to top 🔝](#library-management-api)
 
@@ -380,7 +380,7 @@ GET /borrowings/overdue
 
 ---
 
-## 📊 Reports
+## Reports
 
 #### [Back to top 🔝](#library-management-api)
 
@@ -478,7 +478,7 @@ GET /reports/borrowings/last-month?format={csv|xlsx}
     - **Content-Disposition**: `attachment; filename="last-month-borrowings.{csv|xlsx}"`
     - **Content-Type** as above
 
-## 🏥 Health Check API
+## Health Check API
 
 #### [Back to top 🔝](#library-management-api)
 
@@ -503,7 +503,7 @@ GET /health
 }
 ```
 
-## ⚠️ Error Responses
+## Error Responses
 
 #### [Back to top 🔝](#library-management-api)
 
@@ -554,4 +554,4 @@ GET /health
 
 ## 📚 Additional Documentation
 
-- [Database Schema](./docs/DATABASE.md) - Database design and relationships
+- [Database Schema](./DATABASE.md) - Database design and relationships
