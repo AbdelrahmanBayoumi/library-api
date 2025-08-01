@@ -9,6 +9,8 @@
 
 A comprehensive library management API built with NestJS, featuring book borrowing, borrower management, and detailed reporting with CSV/Excel export capabilities.
 
+- 🌍 Live Deployment: https://library-api-production-206d.up.railway.app
+
 ## 🚀 Features
 
 - **📖 Book Management**: CRUD operations for books with search functionality
