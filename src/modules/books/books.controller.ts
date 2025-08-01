@@ -14,6 +14,7 @@ import {
 	ApiTags,
 } from '@nestjs/swagger';
 
+import { Throttle } from '@nestjs/throttler';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
@@ -83,7 +84,8 @@ export class BooksController {
 		description: 'Exact match on ISBN',
 		type: String,
 	})
-	findAll(
+	@Throttle({ default: { limit: 5, ttl: 60 } }) // 5 requests per minute
+	async findAll(
 		@Query('title') title?: string,
 		@Query('author') author?: string,
 		@Query('isbn') isbn?: string,

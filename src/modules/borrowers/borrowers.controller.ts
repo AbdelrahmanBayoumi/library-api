@@ -12,6 +12,7 @@ import {
 	ApiTags,
 } from '@nestjs/swagger';
 
+import { Throttle } from '@nestjs/throttler';
 import { BorrowersService } from './borrowers.service';
 import { CreateBorrowerDto } from './dto/create-borrower.dto';
 import { UpdateBorrowerDto } from './dto/update-borrower.dto';
@@ -62,7 +63,8 @@ export class BorrowersController {
 		required: false,
 		enum: ['ASC', 'DESC'],
 	})
-	findAll(
+	@Throttle({ default: { limit: 5, ttl: 60 } }) // 5 requests per minute
+	async findAll(
 		@Query('name') name?: string,
 		@Query('email') email?: string,
 		@Query('page') page?: number,
