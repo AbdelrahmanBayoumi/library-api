@@ -1,5 +1,3 @@
-// src/modules/books/books.controller.ts
-
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import {
 	ApiBadRequestResponse,

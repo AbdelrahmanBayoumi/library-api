@@ -1,5 +1,3 @@
-// src/modules/reports/reports.controller.ts
-
 import { BadRequestException, Controller, Get, HttpStatus, Query, Res } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
